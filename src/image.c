@@ -1487,7 +1487,7 @@ void test_resize(char *filename)
 image load_image_stb(char *filename, int channels)
 {
     int w, h, c;
-    unsigned char *data = stbi_load(filename, &w, &h, &c, channels);
+    unsigned short *data = stbi_load(filename, &w, &h, &c, channels);
     if (!data) {
         char shrinked_filename[1024];
         if (strlen(filename) >= 1024) sprintf(shrinked_filename, "name is too long");
@@ -1513,7 +1513,7 @@ image load_image_stb(char *filename, int channels)
             for(i = 0; i < w; ++i){
                 int dst_index = i + w*j + w*h*k;
                 int src_index = k + c*i + c*w*j;
-                im.data[dst_index] = (float)data[src_index]/255.;
+                im.data[dst_index] = (float)data[src_index]/65536.;
             }
         }
     }
