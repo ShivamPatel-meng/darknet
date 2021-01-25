@@ -240,16 +240,22 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
 
             pthread_join(load_thread, 0);
             train = buffer;
+            printf("243");
             free_data(train);
+            printf("245");
             load_thread = load_data(args);
-
+            
+            printf("248");
             for (k = 0; k < ngpus; ++k) {
                 resize_network(nets + k, dim_w, dim_h);
+                printf("251");
             }
             net = nets[0];
         }
         double time = what_time_is_it_now();
+        printf("256");
         pthread_join(load_thread, 0);
+        printf("258");
         train = buffer;
         printf(" im at 254");
         if (net.track) {
