@@ -174,6 +174,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
     sprintf(windows_name, "chart_%s.png", base);
     img = draw_train_chart(windows_name, max_img_loss, net.max_batches, number_of_lines, img_size, dont_show, chart_path);
 #endif    //OPENCV
+    printf(" im at 177");
     if (net.contrastive && args.threads > net.batch/2) args.threads = net.batch / 2;
     if (net.track) {
         args.track = net.track;
@@ -184,14 +185,15 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
         printf("\n Tracking! batch = %d, subdiv = %d, time_steps = %d, mini_batch = %d \n", net.batch, net.subdivisions, net.time_steps, args.mini_batch);
     }
     //printf(" imgs = %d \n", imgs);
-
+    printf(" im at 188");
     pthread_t load_thread = load_data(args);
-
+    
     int count = 0;
     double time_remaining, avg_time = -1, alpha_time = 0.01;
 
     //while(i*imgs < N*120){
     while (get_current_iteration(net) < net.max_batches) {
+        printf(" im in while");
         if (l.random && count++ % 10 == 0) {
             float rand_coef = 1.4;
             if (l.random != 1.0) rand_coef = l.random;
@@ -249,6 +251,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
         double time = what_time_is_it_now();
         pthread_join(load_thread, 0);
         train = buffer;
+        printf(" im at 254");
         if (net.track) {
             net.sequential_subdivisions = get_current_seq_subdivisions(net);
             args.threads = net.sequential_subdivisions * ngpus;
@@ -446,6 +449,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
         net_map.n = 0;
         free_network(net_map);
     }
+    printf(" im at the end");
 }
 
 
