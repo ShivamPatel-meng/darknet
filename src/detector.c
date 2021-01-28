@@ -202,7 +202,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
             int dim_w = roundl(random_val*init_w / net.resize_step + 1) * net.resize_step;
             int dim_h = roundl(random_val*init_h / net.resize_step + 1) * net.resize_step;
             if (random_val < 1 && (dim_w > init_w || dim_h > init_h)) dim_w = init_w, dim_h = init_h;
-
+            printf("205");
             int max_dim_w = roundl(rand_coef*init_w / net.resize_step + 1) * net.resize_step;
             int max_dim_h = roundl(rand_coef*init_h / net.resize_step + 1) * net.resize_step;
 
@@ -211,7 +211,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
                 dim_w = max_dim_w;
                 dim_h = max_dim_h;
             }
-
+            printf("214");
             if (dim_w < net.resize_step) dim_w = net.resize_step;
             if (dim_h < net.resize_step) dim_h = net.resize_step;
             int dim_b = (init_b * max_dim_w * max_dim_h) / (dim_w * dim_h);
@@ -220,7 +220,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
 
             args.w = dim_w;
             args.h = dim_h;
-
+            printf("223");
             int k;
             if (net.dynamic_minibatch) {
                 for (k = 0; k < ngpus; ++k) {
@@ -233,11 +233,13 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
                 net.batch = dim_b;
                 imgs = net.batch * net.subdivisions * ngpus;
                 args.n = imgs;
+                printf("236");
                 printf("\n %d x %d  (batch = %d) \n", dim_w, dim_h, net.batch);
             }
             else
+                printf("240");
                 printf("\n %d x %d \n", dim_w, dim_h);
-            printf("i m at 240");
+            printf("i m at 242");
             pthread_join(load_thread, 0);
             train = buffer;
             printf("243");
