@@ -290,10 +290,10 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
 
         time = what_time_is_it_now();
         float loss = 0;
-        printf("#############################################");
-        printf("\n");
-        printf(typeof(train));
-        printf(train);
+        //printf("#############################################");
+        //printf("\n");
+        //printf(typeof(train));
+        //printf(train);
 #ifdef GPU
         if (ngpus == 1) {
             printf("ngpus=1");
