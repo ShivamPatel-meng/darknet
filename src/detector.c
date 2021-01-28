@@ -290,12 +290,18 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
 
         time = what_time_is_it_now();
         float loss = 0;
+        printf("#############################################");
+        printf("\n");
+        printf(typeof(train));
+        printf(train);
 #ifdef GPU
         if (ngpus == 1) {
+            printf("ngpus=1");
             int wait_key = (dont_show) ? 0 : 1;
             loss = train_network_waitkey(net, train, wait_key);
         }
         else {
+            printf("ngpus#1");
             loss = train_networks(nets, ngpus, train, 4);
         }
 #else
