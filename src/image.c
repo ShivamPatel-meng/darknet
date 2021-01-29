@@ -1488,6 +1488,7 @@ image load_image_stb(char *filename, int channels)
 {
     int w, h, c;
     unsigned short *data = stbi_load(filename, &w, &h, &c, channels);
+    printf("in load_image_stb");
     if (!data) {
         char shrinked_filename[1024];
         if (strlen(filename) >= 1024) sprintf(shrinked_filename, "name is too long");
@@ -1537,6 +1538,7 @@ image load_image(char *filename, int w, int h, int c)
 {
 #ifdef OPENCV
     //image out = load_image_stb(filename, c);
+    printf("edit load_image_cv");
     image out = load_image_cv(filename, c);
 #else
     image out = load_image_stb(filename, c);    // without OpenCV
