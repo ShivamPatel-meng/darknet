@@ -239,7 +239,8 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
             else
                 printf("240");
                 printf("\n %d x %d \n", dim_w, dim_h);
-            printf("i m at 242");
+                printf("....240...");
+            printf("242");
             pthread_join(load_thread, 0);
             train = buffer;
             printf("243");
