@@ -237,8 +237,10 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
                 printf("\n %d x %d  (batch = %d) \n", dim_w, dim_h, net.batch);
             }
             else
+                printf("....240...");
                 printf("240");
                 printf("\n %d x %d \n", dim_w, dim_h);
+                printf("....240...");
                 printf("....240...");
             printf("242");
             pthread_join(load_thread, 0);
