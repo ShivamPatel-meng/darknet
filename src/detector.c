@@ -239,8 +239,8 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
             else
                 printf("....240...");
                 printf("240");
-                printf("%d",dim_w);
-                printf("%d",dim_h);
+                dim_w = 12;
+                dim_h = 12;
                 printf("\n %d x %d \n", dim_w, dim_h);
                 printf("....240...");
                 printf("....240...");
