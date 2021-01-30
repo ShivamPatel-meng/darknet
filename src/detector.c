@@ -303,14 +303,15 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
         if (ngpus == 1) {
             printf("ngpus=1");
             int wait_key = (dont_show) ? 0 : 1;
-            loss = train_network_waitkey(net, train, wait_key);
+            //loss = train_network_waitkey(net, train, wait_key);
         }
         else {
             printf("ngpus#1");
-            loss = train_networks(nets, ngpus, train, 4);
+            //loss = train_networks(nets, ngpus, train, 4);
         }
 #else
-        loss = train_network(net, train);
+        printf("#1");
+        //loss = train_network(net, train);
 #endif
         if (avg_loss < 0 || avg_loss != avg_loss) avg_loss = loss;    // if(-inf or nan)
         avg_loss = avg_loss*.9 + loss*.1;
