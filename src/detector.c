@@ -174,7 +174,6 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
     sprintf(windows_name, "chart_%s.png", base);
     img = draw_train_chart(windows_name, max_img_loss, net.max_batches, number_of_lines, img_size, dont_show, chart_path);
 #endif    //OPENCV
-    printf(" im at 177");
     if (net.contrastive && args.threads > net.batch/2) args.threads = net.batch / 2;
     if (net.track) {
         args.track = net.track;
@@ -185,15 +184,14 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
         printf("\n Tracking! batch = %d, subdiv = %d, time_steps = %d, mini_batch = %d \n", net.batch, net.subdivisions, net.time_steps, args.mini_batch);
     }
     //printf(" imgs = %d \n", imgs);
-    printf(" im at 188");
+
     pthread_t load_thread = load_data(args);
-    
+
     int count = 0;
     double time_remaining, avg_time = -1, alpha_time = 0.01;
 
     //while(i*imgs < N*120){
     while (get_current_iteration(net) < net.max_batches) {
-        printf(" im in while");
         if (l.random && count++ % 10 == 0) {
             float rand_coef = 1.4;
             if (l.random != 1.0) rand_coef = l.random;
@@ -202,7 +200,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
             int dim_w = roundl(random_val*init_w / net.resize_step + 1) * net.resize_step;
             int dim_h = roundl(random_val*init_h / net.resize_step + 1) * net.resize_step;
             if (random_val < 1 && (dim_w > init_w || dim_h > init_h)) dim_w = init_w, dim_h = init_h;
-            printf("205");
+
             int max_dim_w = roundl(rand_coef*init_w / net.resize_step + 1) * net.resize_step;
             int max_dim_h = roundl(rand_coef*init_h / net.resize_step + 1) * net.resize_step;
 
@@ -211,7 +209,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
                 dim_w = max_dim_w;
                 dim_h = max_dim_h;
             }
-            printf("214");
+
             if (dim_w < net.resize_step) dim_w = net.resize_step;
             if (dim_h < net.resize_step) dim_h = net.resize_step;
             int dim_b = (init_b * max_dim_w * max_dim_h) / (dim_w * dim_h);
@@ -220,7 +218,7 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
 
             args.w = dim_w;
             args.h = dim_h;
-            printf("223");
+
             int k;
             if (net.dynamic_minibatch) {
                 for (k = 0; k < ngpus; ++k) {
@@ -233,36 +231,24 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
                 net.batch = dim_b;
                 imgs = net.batch * net.subdivisions * ngpus;
                 args.n = imgs;
-                printf("236");
                 printf("\n %d x %d  (batch = %d) \n", dim_w, dim_h, net.batch);
             }
             else
-                printf("....240...");
-                printf("240");
                 printf("\n %d x %d \n", dim_w, dim_h);
-                printf("....240...");
-                printf("....240...");
-            printf("242");
+
             pthread_join(load_thread, 0);
             train = buffer;
-            printf("243");
             free_data(train);
-            printf("245");
             load_thread = load_data(args);
-            
-            printf("248");
+
             for (k = 0; k < ngpus; ++k) {
                 resize_network(nets + k, dim_w, dim_h);
-                printf("251");
             }
             net = nets[0];
         }
         double time = what_time_is_it_now();
-        printf("256");
         pthread_join(load_thread, 0);
-        printf("258");
         train = buffer;
-        printf(" im at 254");
         if (net.track) {
             net.sequential_subdivisions = get_current_seq_subdivisions(net);
             args.threads = net.sequential_subdivisions * ngpus;
@@ -295,22 +281,15 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
 
         time = what_time_is_it_now();
         float loss = 0;
-        //printf("#############################################");
-        //printf("\n");
-        //printf(typeof(train));
-        //printf(train);
 #ifdef GPU
         if (ngpus == 1) {
-            printf("ngpus=1");
             int wait_key = (dont_show) ? 0 : 1;
             loss = train_network_waitkey(net, train, wait_key);
         }
         else {
-            printf("ngpus#1");
             loss = train_networks(nets, ngpus, train, 4);
         }
 #else
-        printf("#1");
         loss = train_network(net, train);
 #endif
         if (avg_loss < 0 || avg_loss != avg_loss) avg_loss = loss;    // if(-inf or nan)
@@ -467,7 +446,6 @@ void train_detector(char *datacfg, char *cfgfile, char *weightfile, int *gpus, i
         net_map.n = 0;
         free_network(net_map);
     }
-    printf(" im at the end");
 }
 
 
